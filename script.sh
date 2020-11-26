@@ -152,7 +152,7 @@ do
 			echo "-e --env [dev/staging/prod] 		Válassz a három lehetőség közül (előtte töltsd ki a configot)"
 			echo "-s --src --source [sourceDBName] 	Mi a neve az eredeti DB-nek (pl. prodon van aeron, monotik, stb.)"
 			echo "-t --target [targetDBName] 		Mi legyen a neve az új DB-nek amit felhúz saját gében"
-			echo "--no-colors             Ha buzi vagy akkor használd"
+			echo "--no-colors       			Ha buzi vagy akkor használd"
 			echo "-h --help 				Ez a szar amit most látsz"
 			echo ""
 			echo ""
