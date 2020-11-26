@@ -22,14 +22,14 @@
 ########## START OF CONFIG ##########
 ######################################
 
-# SSH
+# SSH hosts (~/.ssh/config)
 devHost=""
 stagingHost=""
 prodHost=""
 
 # DB
 # dev
-devDBHost="" # host stored in ~/.ssh/config
+devDBHost="" # mysql host
 devDBUser="" # mysql user
 devDBPass="" # mysql password
 devDBPort=""  # mysql port
