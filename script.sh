@@ -57,7 +57,6 @@ dbPort=""  # default 3306
 
 # defaults
 colors="true"
-defaultEnv="dev"
 
 ######################################
 ########### END OF CONFIG ###########
@@ -106,7 +105,7 @@ then
 	exit 1
 fi
 
-env="dev"
+env=""
 srcDBName=""
 targetDBName=""
 force="0"
@@ -209,16 +208,16 @@ else
 			srcDBPort="$devDBPort"
 			srcDBPass="$devDBPass"
 		else
-			env="$defaultEnv"
-			echo "No environment specified! Using $defaultEnv as default!"
+			env="dev"
+			echo "No environment specified! Using dev as default!"
 			if [ "$srcDBName" = "" ]; then
 				srcDBName="$devDBDefaultName"
 			fi
-			srcHost="${$defaultEnv"Host"}"
-			srcDBHost="${$defaultEnv"DBHost"}"
-			srcDBUser="${$defaultEnv"DBUser"}"
-			srcDBPort="${$defaultEnv"DBPort"}"
-			srcDBPass="${$defaultEnv"DBPass"}"
+			srcHost="$devHost"
+			srcDBHost="$devDBHost"
+			srcDBUser="$devDBUser"
+			srcDBPort="$devDBPort"
+			srcDBPass="$devDBPass"
 		fi
 	fi
 fi
