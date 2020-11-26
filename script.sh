@@ -55,8 +55,9 @@ dbUser=""  # default root
 dbPass=""  # default rootpw
 dbPort=""  # default 3306
 
-# display colors by default
+# defaults
 colors="true"
+defaultEnv="dev"
 
 ######################################
 ########### END OF CONFIG ###########
@@ -208,15 +209,16 @@ else
 			srcDBPort="$devDBPort"
 			srcDBPass="$devDBPass"
 		else
-			env="dev"
+			env="$defaultEnv"
+			echo "No environment specified! Using $defaultEnv as default!"
 			if [ "$srcDBName" = "" ]; then
 				srcDBName="$devDBDefaultName"
 			fi
-			srcHost="$devHost"
-			srcDBHost="$devDBHost"
-			srcDBUser="$devDBUser"
-			srcDBPort="$devDBPort"
-			srcDBPass="$devDBPass"
+			srcHost="${$defaultEnv"Host"}"
+			srcDBHost="${$defaultEnv"DBHost"}"
+			srcDBUser="${$defaultEnv"DBUser"}"
+			srcDBPort="${$defaultEnv"DBPort"}"
+			srcDBPass="${$defaultEnv"DBPass"}"
 		fi
 	fi
 fi
@@ -258,11 +260,9 @@ filename="."$targetDBName".sql"
 
 # Dump source database to file
 echo "${GREEN}Dumping source database to file: ${NC}$filename (This could take a while)"
-dumpSourceDB=$(ssh $srcHost mysqldump -u$srcDBUser -h$srcDBHost -p'$srcDBPass' -P$srcDBPort --lock-tables=false --single-transaction --quick $srcDBName > $filename 2>&1)
-echo "$dumpSourceDB"
+dumpSourceDB=$(ssh $srcHost mysqldump -u$srcDBUser -h$srcDBHost -p"$srcDBPass" -P$srcDBPort --lock-tables=false --single-transaction --quick $srcDBName > $filename 2>&1)
 echo "Database dump ${GREEN}successful${NC}!"
 echo ""
-exit 0
 
 # Create target database
 echo "${GREEN}Creating target database ${NC}$targetDBName"
