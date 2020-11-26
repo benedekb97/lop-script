@@ -32,21 +32,21 @@ prodHost=""
 devDBHost="" # mysql host
 devDBUser="" # mysql user
 devDBPass="" # mysql password
-devDBPort=""  # mysql port
+devDBPort="3306"  # mysql port
 devDBDefaultName="" # default DB to steal if none specified
 
 # staging
 stagingDBHost=""
 stagingDBUser=""
 stagingDBPass=""
-stagingDBPort=""
+stagingDBPort="3306"
 stagingDBDefaultName=""
 
 # prod
 prodDBHost=""
 prodDBUser=""
 prodDBPass=""
-prodDBPort=""
+prodDBPort="3306"
 prodDBDefaultName=""
 
 # local settings
