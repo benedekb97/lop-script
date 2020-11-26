@@ -202,11 +202,11 @@ else
 			if [ "$srcDBName" = "" ]; then
 				srcDBName="$prodDBDefaultName"
 			fi
-			srcHost="$devHost"
-			srcDBHost="$devDBHost"
-			srcDBUser="$devDBUser"
-			srcDBPort="$devDBPort"
-			srcDBPass="$devDBPass"
+			srcHost="$prodHost"
+			srcDBHost="$prodDBHost"
+			srcDBUser="$prodDBUser"
+			srcDBPort="$prodDBPort"
+			srcDBPass="$prodDBPass"
 		else
 			env="dev"
 			echo "No environment specified! Using dev as default!"
@@ -259,9 +259,23 @@ filename="."$targetDBName".sql"
 
 # Dump source database to file
 echo "${GREEN}Dumping source database to file: ${NC}$filename (This could take a while)"
-dumpSourceDB=$(ssh $srcHost mysqldump -u$srcDBUser -h$srcDBHost -p"$srcDBPass" -P$srcDBPort --lock-tables=false --single-transaction --quick $srcDBName > $filename 2>&1)
+dumpSourceDB=$(ssh $srcHost "mysqldump -u$srcDBUser -h$srcDBHost -p'$srcDBPass' -P$srcDBPort --lock-tables=false --single-transaction --quick $srcDBName" > $filename 2>&1)
 echo "Database dump ${GREEN}successful${NC}!"
 echo ""
+
+#remove first line
+sed -i '1d' $filename
+if [ "$env" = "prod" ]
+then
+	# if prod remove second line
+	sed -i '1d' $filename
+fi
+
+if [ "$env" = "staging" ]
+then
+	# if staging remove second line
+	sed -i '1d' $filename
+fi
 
 # Create target database
 echo "${GREEN}Creating target database ${NC}$targetDBName"
@@ -298,7 +312,7 @@ fi
 # Clear all the shit
 echo "Cleaning the database!"
 updateSellerHostname=$(mysql -h$dbHost -P$dbPort -p$dbPass -u$dbUser -e"USE $targetDBName; UPDATE seller SET hostname='api.monotik.local' WHERE id = 1;" 2>&1)
-addChannelHost=$(mysql -h$dbHost -P$dbPort -p$dbPass -u$dbUser -e"USE $targetDBName; INSERT INTO channel_host ('channel_id', 'hostname', 'enabled', 'created_at', 'public_hostname') values ('1', 'api.monotik.local', '1', '2020-11-26 21:08:33', 'localhost:3001');" 2>&1)
+addChannelHost=$(mysql -h$dbHost -P$dbPort -p$dbPass -u$dbUser -e"USE $targetDBName; INSERT INTO channel_host (channel_id, hostname, enabled, created_at, public_hostname) values ('1', 'api.monotik.local', '1', '2020-11-26 21:08:33', 'localhost:3001');" 2>&1)
 removeEncryptedConfiguration=$(mysql -h$dbHost -P$dbPort -p$dbPass -u$dbUser -e"USE $targetDBName; UPDATE shipping_gateway SET encrypted_configuration=NULL;" 2>&1)
 
 # echo any errors
